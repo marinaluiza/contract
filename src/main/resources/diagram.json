@@ -1,0 +1,146 @@
+{
+  "name": "SC_1",
+
+  "states": {
+
+    "initial": "initial",
+
+    "created": "created",
+
+    "in_effect": "in_effect",
+
+    "suspended": "suspended",
+
+    "active": "active",
+
+    "unassigned": "unassigned",
+
+    "successful_termination": "successful_termination",
+
+    "unsuccessful_termination": "unsuccessful_termination"
+
+  },
+
+  "transitions": {
+
+    "activate_obligations": {
+      "source": "active",
+      "target": "active",
+      "event": "eactivate obligation",
+      "set_of_obligations_to_be_activated": [
+        ["trigger 1", "obligation 1"],
+        ["trigger 2", "obligation 2"]
+      ]
+    },
+
+    "activate_powers": {
+      "source": "active",
+      "target": "active",
+      "event": "activate power",
+      "set_of_powers_to_be_activated": [
+        ["trigger 1", "power 1"],
+        ["trigger 2", "power 2"]
+      ]
+    },
+
+    "suspend_obligations": {
+      "source": "active",
+      "target": "active",
+      "event": "suspend obligation",
+      "set_of_obligations_to_be_suspended": [
+        ["trigger 1", "obligation 1"],
+        ["trigger 2", "obligation 2"]
+      ]
+    },
+
+    "suspend_powers": {
+      "source": "active",
+      "target": "active",
+      "event": "suspend power",
+      "set_of_powers_to_be_suspended": [
+        ["trigger 1", "obligation 1"],
+        ["trigger 2", "obligation 2"]
+      ]
+    },
+
+    "create": {
+      "source": "initial",
+      "target": "created",
+      "event": "create",
+      "obligations_to_be_created": ["obligation 1", "obligation 2", "obligation N"],
+      "powers_to_be_created": ["power 1", "power 2", "power N"]
+    },
+
+    "activate":{
+      "source": "created",
+      "target": "in_effect",
+      "event": "activate",
+      "obligations_to_be_activated": ["obligation 1", "obligation 2", "obligation N"],
+      "powers_to_be_activated": ["power 1", "power 2", "power N"]
+    },
+
+    "create and activate":{
+      "source": "initial",
+      "target": "in_effect",
+      "event": "create and activate",
+      "obligations_to_be_created_and_activated": ["obligation 1", "obligation 2", "obligation N"],
+      "powers_to_be_created_and_activated": ["power 1", "power 2", "power N"]
+    },
+
+    "suspend":{
+      "source": "in_effect",
+      "target": "suspended",
+      "event": "suspend",
+      "powers_that_suspend_the_contract": ["power 1", "power 2", "power N"]
+    },
+
+    "resume":{
+      "source": "suspended",
+      "target": "in_effect",
+      "event": "resume",
+      "set_of_lists_obligations_powers_that_resume_the_contract": [
+        ["obligation 1", "obligation 2", "power 1", "power 2"],
+        ["obligation 1", "obligation 2", "power 1", "power 2"]
+      ],
+      "obligations_to_be_resumed": ["obligation 1", "obligation 2"],
+      "powers_to_be_resumed": ["power 1", "power 2"]
+    },
+
+    "revoke party": {
+      "source": "in_effect",
+      "target": "unassigned",
+      "event": "revoke party",
+      "powers_that_revoke_a_party": ["power 1", "power 2", "power N"]
+    },
+
+    "assign party": {
+      "source": "unassigned",
+      "target": "in_effect",
+      "event": "assign party",
+      "powers_that_assign_a_party": ["power 1", "power 2", "power N"]
+    },
+
+    "fulfill active obligations and powers": {
+      "source": "in_effect",
+      "target": "successful_termination",
+      "event": "fulfill active obligations and powers",
+      "set_of_lists_obligations_powers_to_be_fulfilled": [
+        ["obligation 1", "obligation 2", "power 1", "power 2"],
+        ["obligation 3", "obligation 4", "power 3", "power 4"]
+      ]
+    },
+
+    "terminate": {
+      "source": "active",
+      "target": "unsuccessful_termination",
+      "event": "terminate",
+      "set_of_lists_powers_obligations_unfulfilled": [
+        ["not obligation 1", "not obligation 2", "power 1", "power 2"],
+        ["not obligation 3", "not obligation 4", "power 3", "power 4"]
+      ]
+    }
+
+
+  }
+
+}

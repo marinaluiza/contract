@@ -1,0 +1,75 @@
+{
+  "name": "$name",
+
+  "states": {
+
+    "initial": "initial",
+
+    "created": "created",
+
+    "in_effect": "in_effect",
+
+    "suspended": "suspended",
+
+    "fulfilled": "fulfilled",
+
+    "violated": "violated",
+
+    "unsuccessful_termination": "unsuccessful_termination"
+
+  },
+
+  "transitions": {
+
+    "create_obligation": {
+      "source": "initial",
+      "target": "created",
+      "event": "$trigger"
+    },
+
+    "activate_obligation": {
+      "source": "$initial",
+      "target": "in_effect",
+      "event": "$antecedent"
+    },
+
+    "suspend_obligation": {
+      "source": "in_effect",
+      "target": "suspended",
+      "event": "suspended by power",
+      "power": ["power 1"]
+    },
+
+    "resume":{
+      "source": "suspended",
+      "target": "in_effect",
+      "event": "resumed by power",
+      "power": ["power 1"]
+    },
+
+    "fulfill_obligation": {
+      "source": "in_effect",
+      "target": "fulfilled",
+      "event": "$consequent"
+    },
+
+    "violate_obligation": {
+      "source": "in_effect",
+      "target": "violated",
+      "event": "NOT $consequent"
+    },
+
+    "terminate": {
+      "source": "in_effect",
+      "target": "unsuccessful_termination",
+      "event": "terminate",
+      "set_of_lists_powers_obligations_unfulfilled": [
+        ["not obligation 1", "not obligation 2", "power 1", "power 2"],
+        ["not obligation 3", "not obligation 4", "power 3", "power 4"]
+      ]
+    }
+
+
+  }
+
+}

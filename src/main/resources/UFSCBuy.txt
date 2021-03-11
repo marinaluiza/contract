@@ -1,0 +1,51 @@
+Domain ufscSalePaperD
+
+Seller isA ROLE with returnAddress : STRING, cnpj : NUMBER;
+Buyer isA ROLE with adress : STRING, cnpj : NUMBER;
+Paper isA ASSET with groupNumber : NUMBER, description : STRING, quantity : NUMBER,
+Delivered isA EVENT with item : Paper, deliveryAddress : STRING, delDueD : DATE;
+Paid isA EVENT with amount : NUMBER, from : ROLE, to : ROLE, payDueD : DATE;
+PaidLate isA EVENT with amount : NUMBER, currency : Currency, from : ROLE, to : ROLE;
+ReportDelay isA EVENT with antecedence : NUMBER;
+Damage isA EVENT;
+IndemnityPayment isA EVENT with value : NUMBER ;
+
+endDomain
+
+Contract ufscSalePaperC (ufsc : Buyer, dicapel : Seller, order : Paper[], payDueDate : DATE, delAdd : STRING, solicitationDate : DATE,
+	delDueDateDays : NUMBER, interest : NUMBER, antDelayHours : NUMBER)
+
+Declarations
+
+goods : order;
+delivered : Delivered with item := goods, deliveryAddress := delAdd, delDueD := solicitationDate + delDueDateDays;
+paid : Paid with amount := amt, from := ufsc, to := seller, payDueD := delivered.delDueD + payDueDate;
+paidLate : PaidLate with amount := amt * (interest/100) * (effectivePayDate - delivered.delDueDate), from := buyer, to := seller;
+reportDelay : ReportDelay with antecedence := antDelayHours
+indemnityPayment : IndemnityPayment;
+
+Preconditions
+forAll goods | isOwner(self.goods.instance, seller);
+
+Postconditions
+forAll goods | isOwner(self.goods.instance, buyer) AND NOT (forAll goods | isOwner(self.goods.instance, seller));
+
+Obligations
+O5.1 : O(dicapel, ufsc, TRUE, happensBefore(delivered, delDueDate));
+O5.6 : NOT occurs(happensBefore(delivered, delDueDate)) -> O(dicapel, ufsc, TRUE, happensBefore(reportDelay, delivered.delDueDate - antDelayHours));
+O5.9 : occurs(damage, UNNAMED_INTERVAL) -> O(dicapel, ufsc, TRUE, happens(indemnityPayment, NO_POINT));
+
+O7.1&7.2&7.5 : O(ufsc , dicapel , oFULFILLED(O5.1), happensBefore(paid, payDueD));
+O7.6 : occurs(oVIOLATION(O7.1&7.2&7.5), NO_INTERVAL) -> O(buyer, seller, oFULFILLED(O5.1), happens(paidLate, NO_POINT));
+
+Powers
+P11.2.A : NOT(oFULFILLED(O5.1) | oFULFILLED(O5.6)) -> P(ufsc, dicapel, TRUE, oDISCHARGE(O7.1&7.2&7.5) AND cUNSECCESSFUL_TERMINATION(ufscSalePaperC));
+P11.2.B : NOT(oFULFILLED(O7.1&7.2&7.5) | NOT(oFULFILLED(O7.6)) -> P(dicapel, ufsc, TRUE, cUNSECCESSFUL_TERMINATION(ufscSalePaperC));
+
+
+Constraints
+NOT(isEqual(buyer, seller));
+forAll o | self.obligation.instance (CannotBeAssigned);
+forAll p | self.power.instance (CannotBeAssigned);
+
+endContract

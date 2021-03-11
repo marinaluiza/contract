@@ -1,0 +1,91 @@
+{
+  "name": "UMLStateMachine",
+  "events": [
+    {
+      "name": "EventOne",
+      "type": "input",
+      "data": [
+        {
+          "name": "EventOneData",
+          "type": "int"
+        }
+      ]
+    },
+    {
+      "name": "EventTwo",
+      "type": "output",
+      "data": [
+        {
+          "name": "EventTwoData",
+          "type": "char"
+        }
+      ]
+    },
+    {
+      "name": "EventThree",
+      "type": "output",
+      "data": [
+        {
+          "name": "EventThreeData",
+          "type": "void*"
+        }
+      ]
+    }
+  ],
+  "data": [
+    {
+      "name": "dataOne",
+      "type": "int"
+    },
+    {
+      "name": "dataTwo",
+      "type": "int"
+    }
+  ],
+  "states": [
+    {
+      "name": "StateOne",
+      "events": {
+        "onEntry": true,
+        "onTick": true,
+        "onExit": true
+      }
+    },
+    {
+      "name": "StateTwo",
+      "events": {
+        "onEntry": true,
+        "onTick": true,
+        "onExit": true
+      }
+    },
+    {
+      "name": "StateThree",
+      "output": "EventTwo",
+      "events": {
+        "onEntry": true,
+        "onTick": true,
+        "onExit": true
+      }
+    }
+  ],
+  "transitions": [
+    {
+      "name": "TransitionOne",
+      "from": "StateOne",
+      "to": "StateTwo",
+      "trigger": "EventOne"
+    },
+    {
+      "name": "TransitionTwo",
+      "from": "StateTwo",
+      "trigger": "EventOne",
+      "guard": "dataOne > 5",
+      "to": {
+        "onTrue": "StateOne",
+        "onFalse": "StateTwo"
+      }
+    }
+  ],
+  "initialState": "StateOne"
+}
