@@ -1,15 +1,14 @@
 package br.com.marinaluiza.contract.controllers;
 
-import br.com.marinaluiza.contract.model.Contract;
 import br.com.marinaluiza.contract.services.ContractTransformationService;
-import org.springframework.http.ResponseEntity;
+
+import org.json.simple.JSONObject;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.FileReader;
-import java.io.IOException;
+
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.stream.Collectors;
@@ -26,15 +25,13 @@ public class ContractController {
         }
 
         @PostMapping("/")
-        public ResponseEntity<String> get(HttpServletRequest request) {
+        public JSONObject get(HttpServletRequest request) {
             ClassLoader classLoader = getClass().getClassLoader();
-            String path = classLoader.getResource("Simple_Meat_Sample.txt").getFile();
+            String path = classLoader.getResource("meatSaleContract.txt").getFile();
             try (Stream<String> lines = Files.lines(Paths.get(path))) {
                 String content = lines.collect(Collectors.joining(System.lineSeparator()));
-                service.createDiagram(content);
-                System.out.println(content);
-                return ResponseEntity.ok("Hello World!");
-            } catch (IOException | ClassNotFoundException e) {
+                return service.createDiagram(content);
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             return null;

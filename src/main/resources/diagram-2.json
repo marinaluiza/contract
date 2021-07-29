@@ -25,12 +25,12 @@
       "target": "created",
       "event": "create",
       // todos que nao possuem triggers
-      "obligations_to_be_created": [
+      "obligations_created": [
         "obligation 1",
         "obligation 2",
         "obligation N"
       ],
-      "powers_to_be_created": ["power 1", "power 2", "power N"]
+      "powers_created": ["power 1", "power 2", "power N"]
     },
 
     "activate_contract": {
@@ -39,19 +39,19 @@
       "event": "activate",
       // contract only becomes active on its effective date.
       // todos com antecedente === true
-      "obligations_to_be_activated": [
+      "obligations_activated": [
         "obligation 1",
         "obligation 2",
         "obligation N"
       ],
-      "powers_to_be_activated": ["power 1", "power 2", "power N"]
+      "powers_activated": ["power 1", "power 2", "power N"]
     },
 
     "activate_obligations": {
       "source": "active",
       "target": "active",
       "event": "activate obligation",
-      "set_of_obligations_to_be_activated": [
+      "obligations_activated": [
         ["trigger 1", "obligation 1"],
         ["trigger 2", "obligation 2"]
       ]
@@ -61,26 +61,10 @@
       "source": "active",
       "target": "active",
       "event": "activate power",
-      "set_of_powers_to_be_activated": [
+      "powers_activated": [
         ["trigger 1", "power 1"],
         ["trigger 2", "power 2"]
       ]
-    },
-
-    "suspend": {
-      "source": "active",
-      "target": "active",
-      "event": "suspend obligation",
-      "obligations_to_be_suspended": [],
-      "by_powers": []
-    },
-
-    "suspend_powers": {
-      "source": "active",
-      "target": "active",
-      "event": "suspend power",
-      "powers_to_be_suspended": []
-
     },
 //     A contract may
 // also be suspended if one of the parties exerts its suspension powers, or if a force
@@ -92,7 +76,7 @@
       "target": "suspended",
       "event": "suspend",
       // power com consequent === cSUSPENSION(...)
-      "powers_that_suspend_the_contract": ["power 1", "power 2", "power N"]
+      "by_powers": ["power 1", "power 2", "power N"]
       
     },
 
@@ -103,7 +87,7 @@
       "target": "in_effect",
       "event": "resume",
       // Só powers e algo do tipo cRESUME ?
-      "powers_that_resume_the_contract": ["obligation 1", "obligation 2", "power 1", "power 2"],
+      "by_powers": ["power 1", "power 2"],
       "obligations_to_be_resumed": ["obligation 1", "obligation 2"],
       "powers_to_be_resumed": ["power 1", "power 2"]
     },
@@ -111,19 +95,13 @@
 //     a contract may enter the Unassign state when the assigner withdraws,
 // and then will remain in that state until the assignee is assigned
 
-    "revoke_party": {
+    "replace_party": {
       "source": "in_effect",
       "target": "unassigned",
       "event": "revoke party",
-      "powers_that_revoke_a_party": ["power 1", "power 2", "power N"]
+      "by_powers": ["power 1", "power 2", "power N"]
     },
 
-    "assign_party": {
-      "source": "unassigned",
-      "target": "in_effect",
-      "event": "assign party",
-      "powers_that_assign_a_party": ["power 1", "power 2", "power N"]
-    },
 
 //     A contract
 // successfully terminates (SuccessfulTermination) if all of its active obligations
@@ -136,7 +114,7 @@
       //obligations in effect
       // 1o -> obligations sem trigger
       //verificar oVIOLATION para montar outros sets
-      "set_of_lists_obligations_powers_to_be_fulfilled": [
+      "obligations_fulfilled": [
         ["obligation 1", "obligation 2", "power 1", "power 2"],
         ["obligation 3", "obligation 4", "power 3", "power 4"]
       ]
@@ -151,27 +129,14 @@
       "source": "active",
       "target": "unsuccessful_termination",
       "event": "terminate",
-      "set_of_lists_powers_obligations_unfulfilled": [
+      "obligations_unfulfilled": [
         ["not obligation 1", "not obligation 2", "power 1", "power 2"],
         ["not obligation 3", "not obligation 4", "power 3", "power 4"]
       ],
       //cUNSUCCESSFUL_TERMINATION
-      "powers_that_terminate_the_contract": ["power 1", "power 2", "power N"]
-    },
-
-    "activate_surviving_obligations": {
-      "source": "active",
-      "target": "active",
-      "event": "activate surviving obligations",
-      "set_of_lists_surviving_obligations_to_be_activated": [
-        [
-          "trigger 1",
-          "surviving obligation 1",
-          "surviving obligation 2",
-          "surviving obligation 3"
-        ],
-        ["trigger 2", "surviving obligation 4", "surviving obligation 5"]
-      ]
+      "by_powers": ["power 1", "power 2", "power N"]
     }
+
+  
   }
 }

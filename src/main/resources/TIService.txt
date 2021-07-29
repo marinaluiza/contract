@@ -1,0 +1,74 @@
+Domain serviceSaleD
+
+Tech1 isA ROLE with returnAddress : STRING;
+Tech2 isA ROLE with warehouse : STRING;
+ServiceQuality isA Enumeration(GREAT, REGULAR, BAD);
+Service isA ASSET with scope : STRING, quality : ServiceQuality;
+Delivered isA EVENT with item : Service, delDueD : DATE;
+//Nao tem nada no contrato que fale de entrega atrasada
+DeliveredLate isA EVENT with item : Service, report: STRING, delDueD : DATE;
+Paid isA EVENT with amount : NUMBER, from : ROLE, to : ROLE, payDueD : DATE;
+PaidLate isA EVENT with amount : NUMBER, from : ROLE, to : ROLE;
+MaintenceByDemand isA EVENT with valuePerHour : NUMBER;
+MaintenceByMonth isA EVENT with hours : NUMBER, valuePerMonth : NUMBER;
+
+// Como representar essas horas? É uma escolha que nao da pra parametrizar na criacao do contrato
+MaintenceByDemandOption isA EVENT with hoursAmount : NUMBER;
+Disclosed isA EVENT with contractID : STRING;
+Competition isA EVENT with contractID : STRING;
+
+endDomain
+
+Contract serviceSaleC (buyer : Tech1, seller : Tech2, service : Service,
+	amt : NUMBER, payDueDate : DATE, effDate : DATE, delDueDateDays : NUMBER, fee: NUMBER,
+	monthlyDemand : NUMBER, valuePerMonth : NUMBER, valuePerHour : NUMBER
+)
+
+Declarations 
+goods : Service with scope := scope, quality := qlt;
+delivered : Delivered with item := service, delDueD := effDate + delDueDateDays;
+paidHalf: Paid with amount := amt/2, from := buyer, to := seller, payDueD := effDate + 15 days;
+paidOtherHalf: Paid with amount := amt/2, from := buyer, to := seller, payDueD := payDueDate;
+paidLate : PaidLate with amount := paidHalf.amount + fee, from := buyer, to := seller;
+paidLateOtherHalf : PaidLate with amount := paidOtherHalf.amount + fee, from := buyer, to := seller;
+deliveredLate : DeliveredLate with item := service;
+maintenceByMonthOption : EVENT;
+maintenceByMonth : MaintenceByMonth with hours := monthlyDemand, valuePerMonth := valuePerMonth;
+maintenceByDemandOption : EVENT;
+maintenceByDemand : MaintenceByDemand with valuePerHour := valuePerHour;
+rescisionAgreement : EVENT;
+disclosed : Disclosed with contractID := serviceSaleC;
+competition : Competition with contractID := serviceSaleC;
+
+Preconditions
+isOwner(goods, seller);
+
+Postconditions
+isOwner(goods, buyer) AND NOT (isOwner(goods,seller));
+
+Obligations
+O1 : O(seller, buyer, TRUE, happensBefore(delivered, delDueDate));
+O2 : O(buyer, seller, TRUE, happensBefore(paidHalf, payDueD));
+O3 : O(buyer , seller , TRUE, happensBefore(paidOtherHalf, payDueD));
+O4 : occurs(oVIOLATION(O2), NO_INTERVAL) -> O(buyer, seller, TRUE, happens(paidLate, NO_POINT));
+O5 : occurs(oVIOLATION(O3), NO_INTERVAL) -> O(buyer, seller, TRUE, happens(paidLateOtherHalf, NO_POINT));
+
+SurvivingObls
+SO1 : O(seller, buyer, TRUE, NOT happens(disclosed, NO_INTERVAL));
+SO2 : O(seller, buyer, TRUE, NOT happens(competition, NO_INTERVAL));
+SO3 : O(buyer, seller, TRUE, NOT happens(competition, NO_INTERVAL));
+SO4 : happens(cUNSECCESSFUL_TERMINATION(serviceSaleC)) -> O(buyer, seller, TRUE, NOT happens(competition, t) AND (t within 1 YEAR AFTER cACTIVATED(serviceSaleC)));
+SO5 : happens(maintenceByDemandOption, NO_INTERVAL) -> O(seller, buyer, TRUE, maintenceByDemand);
+SO6 : happens(maintenceByMonthOption, NO_INTERVAL) -> O(seller, buyer, TRUE, maintenceByMonth);
+
+Powers
+P1 : happens(rescisionAgreement, NO_INTERVAL) -> P(buyer, seller, TRUE, cUNSECCESSFUL_TERMINATION(serviceSaleC));
+P2 : happens(rescisionAgreement, NO_INTERVAL) -> P(seller, buyer, TRUE, cUNSECCESSFUL_TERMINATION(serviceSaleC));
+
+
+Constraints
+NOT(isEqual(buyer, seller));
+forAll o | self.obligation.instance (CannotBeAssigned); 
+forAll p | self.power.instance (CannotBeAssigned);
+
+endContract

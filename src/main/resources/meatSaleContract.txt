@@ -39,8 +39,8 @@ SO1 : O(seller, buyer, TRUE, NOT happens(disclosed, t) AND (t within 6 MONTHS AF
 SO2 : O(buyer, seller, TRUE, NOT happens(disclosed, t) AND (t within 6 MONTHS AFTER cACTIVATED(meatSaleC)));
 
 Powers
-P1 : occurs (oVIOLATION(O2), UNNAMED_INTERVAL) -> P(seller, buyer,TRUE, oSUSPENSION(O1));
-P2 : happensWithin(paidLate, oSUSPENSION(O1)) -> P(buyer, seller, TRUE, oINEFFECT(O1));
+P1 : occurs(oVIOLATION(O2), UNNAMED_INTERVAL) -> P(seller, buyer,TRUE, oSUSPENDED(O1));
+P2 : happensWithin(paidLate, oSUSPENSION(O1)) -> P(buyer, seller, TRUE, oRESUMED(O1));
 P3 : NOT(happensBefore(delivered, 10 DAYS AFTER delDueDate)) -> P(buyer, seller, TRUE, oDISCHARGE(O2) AND oDISCHARGE(O3) AND cUNSUCCESSFUL_TERMINATION(meatSaleC));
 
 Constraints

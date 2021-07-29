@@ -8,6 +8,7 @@ import java.util.Map;
 @Getter @Setter
 public class DomainDTO {
 
+    String name;
     String specialization;
     Map<String, String> attributes;
 }

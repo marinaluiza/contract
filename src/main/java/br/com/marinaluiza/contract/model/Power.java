@@ -1,5 +1,9 @@
 package br.com.marinaluiza.contract.model;
 
-public class Power extends LegalPosition{
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter @Setter
+public class Power extends LegalPosition {
 
 }

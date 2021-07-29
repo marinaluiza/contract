@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
-public class Obligation {
+public class Obligation extends LegalPosition {
 
 //    Boolean surviving;
 //    Role debtor;
@@ -14,10 +14,5 @@ public class Obligation {
 //    LegalSituation trigger;
 
     Boolean surviving;
-    String debtor;
-    String creditor;
-    String antecedent;
-    String consequent;
-    String trigger;
 
 }

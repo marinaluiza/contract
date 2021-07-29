@@ -6,8 +6,11 @@ import lombok.Setter;
 @Getter @Setter
 public class LegalPosition {
 
-    Role debtor;
-    Role creditor;
-    LegalSituation antecedent;
-    LegalSituation consequent;
+
+    String debtor;
+    String creditor;
+    String antecedent;
+    String consequent;
+    String trigger;
+    String name;
 }

@@ -1,0 +1,109 @@
+{
+	"name": "SC_1",
+	
+	"states": {
+	
+		"initial": "Initial",
+		
+		"created": "Created",
+	
+		"in_effect": "In Effect",
+
+		"suspended": "Suspended",
+		
+		"active": "Active",
+
+		"unassign": "Unassign",
+	
+		"successful_termination": "Successful Termination",		
+	
+		"unsuccessful_termination": "Unsuccessful Termination"
+    
+	},
+	
+	"transitions": {
+	
+		"create_contract": {
+			"source": "initial",
+			"target": "created",
+			"event": "create",
+  			"parties_to_be_included": [],
+            "obligations_to_be_created": [],
+            "powers_to_be_created": []
+        },
+		
+		"activate_contract":{
+			"source": "created",
+			"target": "in_effect",	
+			"event": "activate",
+  			"obligations_to_be_activated": [],
+ 	 		"powers_to_be_activated": []
+		},
+			
+		"activate_obligation": {
+			"source": "in_effect",
+			"target": "in_effect",
+			"event": "activate obligation",		
+			"obligations_to_be_activated_by_powers": [],
+			"obligations_to_be_activated_by_unfulfilled_obligations": [],
+			"obligations_to_be_activated_by_conditions": []
+		},
+				
+		"activate_power": {
+			"source": "in_effect",
+			"target": "in_effect",
+			"event": "activate power",		
+			"powers_to_be_activated_by_unfulfilled_obligations": [],
+			"powers_to_be_activated_by_conditions": []
+		},
+
+		"suspend_contract":{
+			"source": "in_effect",
+			"target": "suspended",	
+			"event": "suspend",
+  			"powers_that_suspend_the_contract": [],
+  			"obligations_to_be_activated": [],
+  			"powers_to_be_activated": []
+		},
+				
+		"resume_contract":{
+			"source": "suspended",
+			"target": "in_effect",	
+			"event": "resume",
+  			"powers_that_resume_the_contract": []
+ 		},
+	
+		"revoke_party": {
+			"source": "active",
+			"target": "unassign",	
+			"event": "revoke party",
+  			"powers_that_revoke_party": []
+		},
+
+		"assign_party": {
+			"source": "unassign",
+			"target": "active",	
+			"event": "assign party",
+  			"powers_that_assign_party": []
+		},
+	
+		"fulfill_active_obligations": {
+			"source": "in_effect",
+			"target": "successful_termination",	
+			"event": "fulfill active obligations",
+			"set_of_lists_obligations_to_be_fulfilled": [],
+			"surviving_obligations_to_be_activated": []
+
+		},
+
+		"terminate_contract": {
+			"source": "active",
+			"target": "unsuccessful_termination",	
+			"event": "terminate",
+			"powers_that_terminate_the_contract": [],
+			"obligations_and_penalties_to_be_activated": []
+		}
+		
+	}
+	
+}
