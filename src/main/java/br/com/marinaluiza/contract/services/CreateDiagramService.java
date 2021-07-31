@@ -44,7 +44,7 @@ public abstract class CreateDiagramService {
     }
 
     public JSONObject createDiagramContract() throws ParseException {
-        JSONObject diagramJson = readJsonFile("diagram-3.json");
+        JSONObject diagramJson = readJsonFile("diagramModel.json");
         JSONObject transitions = (JSONObject) diagramJson.get("transitions");
 
         //Create contract

@@ -1,0 +1,123 @@
+{
+    "name": "meatSaleC",
+    "transitions": {
+        "assign_party": {
+            "source": "unassign",
+            "event": "assign party",
+            "powers_that_assign_party": [],
+            "target": "active"
+        },
+        "resume_contract": {
+            "powers_that_resume_the_contract": [],
+            "source": "suspended",
+            "event": "resume",
+            "target": "in_effect"
+        },
+        "activate_obligation": {
+            "obligations_to_be_activated_by_conditions": [],
+            "source": "in_effect",
+            "obligations_to_be_activated_by_unfulfilled_obligations": [
+                [
+                    "unfulfilled O2",
+                    "O3"
+                ]
+            ],
+            "event": "activate obligation",
+            "obligations_to_be_activated_by_powers": [],
+            "target": "in_effect"
+        },
+        "create_contract": {
+            "powers_created": [],
+            "obligations_created": [
+                "O1",
+                "O2"
+            ],
+            "powers_to_be_created": [],
+            "source": "initial",
+            "event": "create",
+            "parties_to_be_included": [
+                "Seller",
+                "Buyer"
+            ],
+            "target": "created",
+            "obligations_to_be_created": []
+        },
+        "fulfill_active_obligations": {
+            "surviving_obligations_to_be_activated": [
+                "SO1",
+                "SO2"
+            ],
+            "source": "in_effect",
+            "set_of_lists_obligations_to_be_fulfilled": [],
+            "event": "fulfill active obligations",
+            "obligations_fulfilled": [
+                [
+                    "O1",
+                    "O2"
+                ],
+                [
+                    "O1",
+                    "O3"
+                ]
+            ],
+            "target": "successful_termination"
+        },
+        "activate_power": {
+            "powers_to_be_activated_by_unfulfilled_obligations": [],
+            "powers_to_be_activated_by_conditions": [],
+            "source": "in_effect",
+            "event": "activate power",
+            "target": "in_effect"
+        },
+        "revoke_party": {
+            "powers_that_revoke_party": [],
+            "source": "active",
+            "event": "revoke party",
+            "target": "unassign"
+        },
+        "terminate_contract": {
+            "obligations_unfulfilled": [
+                [
+                    "~O1",
+                    "~O2"
+                ],
+                [
+                    "~O1",
+                    "~O3"
+                ]
+            ],
+            "obligations_and_penalties_to_be_activated": [],
+            "powers_that_terminate_the_contract": [],
+            "source": "active",
+            "event": "terminate",
+            "target": "unsuccessful_termination"
+        },
+        "activate_contract": {
+            "obligations_to_be_activated": [],
+            "powers_activated": [],
+            "powers_to_be_activated": [],
+            "obligations_activated": [],
+            "source": "created",
+            "event": "activate",
+            "target": "in_effect"
+        },
+        "suspend_contract": {
+            "obligations_to_be_activated": [],
+            "powers_to_be_activated": [],
+            "powers_that_suspend_the_contract": [],
+            "source": "in_effect",
+            "event": "suspend",
+            "target": "suspended"
+        }
+    },
+    "states": {
+        "in_effect": "In Effect",
+        "initial": "Initial",
+        "created": "Created",
+        "successful_termination": "Successful Termination",
+        "unsuccessful_termination": "Unsuccessful Termination",
+        "active": "Active",
+        "suspended": "Suspended",
+        "unassign": "Unassign"
+    }
+}

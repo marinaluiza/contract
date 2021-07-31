@@ -224,9 +224,10 @@ public class CreateDiagramSymboleoService extends CreateDiagramService {
                         newSet[oblIndex] = item.getName();
                         newSets.add(newSet);
                     }
-                    if(!founded) {
-                        notFoundedObligations.add(item);
-                    }
+                    
+                }
+                if(!founded) {
+                    notFoundedObligations.add(item);
                 }
                 setFulfilledObligations.addAll(newSets);
                 
