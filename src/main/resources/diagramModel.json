@@ -73,18 +73,13 @@
   			"powers_that_resume_the_contract": []
  		},
 	
-		"revoke_party": {
+		 "replace party": {
 			"source": "active",
-			"target": "unassign",	
-			"event": "revoke party",
-  			"powers_that_revoke_party": []
-		},
-
-		"assign_party": {
-			"source": "unassign",
 			"target": "active",	
-			"event": "assign party",
-  			"powers_that_assign_party": []
+			"event": "replace party",
+  			"powers_that_replace_a_party": [
+  				["power 1", "old party", "new party"]
+  			]
 		},
 	
 		"fulfill_active_obligations": {

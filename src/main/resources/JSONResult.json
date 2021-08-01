@@ -1,12 +1,6 @@
 {
     "name": "meatSaleC",
     "transitions": {
-        "assign_party": {
-            "source": "unassign",
-            "event": "assign party",
-            "powers_that_assign_party": [],
-            "target": "active"
-        },
         "resume_contract": {
             "powers_that_resume_the_contract": [],
             "source": "suspended",
@@ -69,12 +63,12 @@
             "event": "activate power",
             "target": "in_effect"
         },
-        "revoke_party": {
-            "powers_that_revoke_party": [],
-            "source": "active",
-            "event": "revoke party",
-            "target": "unassign"
-        },
+        "replace party": {
+			"source": "active",
+			"target": "active",	
+			"event": "replace party",
+  			"powers_that_replace_a_party": []
+		},
         "terminate_contract": {
             "obligations_unfulfilled": [
                 [
